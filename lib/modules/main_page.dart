@@ -1,4 +1,6 @@
-import 'package:edge_delivery/shared/widgets/buttons/main_button.dart';
+import 'package:edge_delivery/modules/delivery_module/presentation/widgets/my_radio_button_widget.dart';
+import 'package:edge_delivery/modules/delivery_module/presentation/widgets/radio_management.dart';
+import 'package:edge_delivery/modules/delivery_module/presentation/widgets/slider_input_widget.dart';
 import 'package:flutter/material.dart';
 
 class MainScreen extends StatelessWidget {
@@ -6,6 +8,7 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('buildin main');
     return Scaffold(
         appBar: AppBar(
           title: const Text('Tela inicial'),
@@ -15,9 +18,8 @@ class MainScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: const [
-              Text('Small'),
-              Text('Medium'),
-              Text('Large'),
+              SliderInputWidget(initialValue: 30.0),
+              RadioManagement()
             ],
           ),
         ));
