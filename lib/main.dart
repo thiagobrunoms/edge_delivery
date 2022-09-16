@@ -1,4 +1,5 @@
 import 'package:edge_delivery/modules/main_page.dart';
+import 'package:edge_delivery/modules/sign_up_module/presentation/sign_up_form_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -17,7 +18,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MainScreen(),
+      // home: const MainScreen(),
+      home: const SignUpFormPage(),
     );
   }
 }
