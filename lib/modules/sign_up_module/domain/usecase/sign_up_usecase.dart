@@ -6,7 +6,8 @@ class SignUpParam {
   final String password;
   final String email;
 
-  SignUpParam(this.name, this.password, this.email);
+  SignUpParam(
+      {required this.name, required this.password, required this.email});
 }
 
 abstract class SignUpUsecase extends Usecase<UserEntity, SignUpParam> {}

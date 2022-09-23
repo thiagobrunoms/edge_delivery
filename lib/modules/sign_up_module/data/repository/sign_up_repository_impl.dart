@@ -9,7 +9,7 @@ class SignUpRepositoryImpl implements SignUpRepository {
   SignUpRepositoryImpl({required this.datasource});
 
   @override
-  Future<UserEntity> signUp(SignUpParam signUpParam) {
-    throw UnimplementedError();
+  Future<UserEntity> signUp(SignUpParam signUpParam) async {
+    return await datasource.signUp(signUpParam);
   }
 }

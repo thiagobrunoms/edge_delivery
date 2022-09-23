@@ -3,4 +3,5 @@ import 'package:edge_delivery/modules/sign_up_module/domain/usecase/sign_up_usec
 
 abstract class SignUpRepository {
   Future<UserEntity> signUp(SignUpParam signUpParam);
+  //verify code
 }

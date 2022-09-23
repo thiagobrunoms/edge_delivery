@@ -9,6 +9,7 @@ class SignUpUsecaseImpl implements SignUpUsecase {
 
   @override
   Future<UserEntity> call({SignUpParam? param}) {
-    throw UnimplementedError();
+    print('usecase ${param!.email}');
+    return repository.signUp(param);
   }
 }
