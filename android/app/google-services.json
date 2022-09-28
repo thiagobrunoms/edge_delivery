@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "711323878051",
+    "project_id": "edge-delivery",
+    "storage_bucket": "edge-delivery.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:711323878051:android:6c6811b6c0b8686086f516",
+        "android_client_info": {
+          "package_name": "com.example.edgedelivery"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "711323878051-vn3frafsng4lnqdom2k9t2jrep93k223.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.edgedelivery",
+            "certificate_hash": "9d9c74f8524796d943f487167f289072db264622"
+          }
+        },
+        {
+          "client_id": "711323878051-sauk0v5h22k68uaerlos4hcihugkioul.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5_Jfb2HLaZqjuy9ck7TOi8Q5or7LajVQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "711323878051-sauk0v5h22k68uaerlos4hcihugkioul.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "711323878051-a59ulpge8ejvo9p4lqoo0l8lk6764rj3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.edgedelivery"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
