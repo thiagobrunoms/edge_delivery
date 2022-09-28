@@ -10,6 +10,7 @@ import 'package:edge_delivery/shared/widgets/buttons/main_button.dart';
 import 'package:edge_delivery/shared/widgets/forms/text_input/text_input_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mobx/mobx.dart';
 
 class SignUpFormPage extends StatefulWidget {
@@ -75,13 +76,27 @@ class _SignUpFormPageState extends State<SignUpFormPage> {
               errorMessage: controller.checkPasswords,
               onChangedCallback: controller.setRepeatPassword,
             ),
-            controller.requestFuture != null &&
-                    controller.requestFuture!.status == FutureStatus.pending
-                ? const CircularProgressIndicator()
-                : MainButtonWidget(callback: controller.send, title: 'Sign Up')
+            Row(
+              children: [
+                controller.requestFuture != null &&
+                        controller.requestFuture!.status == FutureStatus.pending
+                    ? const CircularProgressIndicator()
+                    : MainButtonWidget(
+                        callback: controller.send, title: 'Sign Up'),
+                MainButtonWidget(
+                    callback: fireGoogleSignIn, title: 'Google SignIn'),
+              ],
+            )
           ],
         );
       }),
     );
+  }
+
+  Future<void> fireGoogleSignIn() async {
+    final googleUser = await GoogleSignIn(scopes: ["email"]).signIn();
+    if (googleUser != null) {
+      print(googleUser);
+    }
   }
 }
