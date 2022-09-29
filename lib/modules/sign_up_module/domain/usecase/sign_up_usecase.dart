@@ -1,4 +1,6 @@
+import 'package:dartz/dartz.dart';
 import 'package:edge_delivery/modules/sign_up_module/domain/entities/user_entity.dart';
+import 'package:edge_delivery/modules/sign_up_module/failures/signup_failure.dart';
 import 'package:edge_delivery/shared/usecases/usecase.dart';
 
 class SignUpParam {
@@ -10,4 +12,5 @@ class SignUpParam {
       {required this.name, required this.password, required this.email});
 }
 
-abstract class SignUpUsecase extends Usecase<UserEntity, SignUpParam> {}
+abstract class SignUpUsecase
+    extends Usecase<Either<SignUpFailure, UserEntity>, SignUpParam?> {}

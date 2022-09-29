@@ -85,15 +85,48 @@ mixin _$SignUpFormController on _SignUpFormControllerBase, Store {
       Atom(name: '_SignUpFormControllerBase.requestFuture', context: context);
 
   @override
-  ObservableFuture<UserEntity>? get requestFuture {
+  ObservableFuture<Either<SignUpFailure, UserEntity>>? get requestFuture {
     _$requestFutureAtom.reportRead();
     return super.requestFuture;
   }
 
   @override
-  set requestFuture(ObservableFuture<UserEntity>? value) {
+  set requestFuture(
+      ObservableFuture<Either<SignUpFailure, UserEntity>>? value) {
     _$requestFutureAtom.reportWrite(value, super.requestFuture, () {
       super.requestFuture = value;
+    });
+  }
+
+  late final _$userEntityAtom =
+      Atom(name: '_SignUpFormControllerBase.userEntity', context: context);
+
+  @override
+  UserEntity? get userEntity {
+    _$userEntityAtom.reportRead();
+    return super.userEntity;
+  }
+
+  @override
+  set userEntity(UserEntity? value) {
+    _$userEntityAtom.reportWrite(value, super.userEntity, () {
+      super.userEntity = value;
+    });
+  }
+
+  late final _$errorMessageAtom =
+      Atom(name: '_SignUpFormControllerBase.errorMessage', context: context);
+
+  @override
+  String get errorMessage {
+    _$errorMessageAtom.reportRead();
+    return super.errorMessage;
+  }
+
+  @override
+  set errorMessage(String value) {
+    _$errorMessageAtom.reportWrite(value, super.errorMessage, () {
+      super.errorMessage = value;
     });
   }
 
@@ -160,6 +193,8 @@ email: ${email},
 password: ${password},
 repeatPassword: ${repeatPassword},
 requestFuture: ${requestFuture},
+userEntity: ${userEntity},
+errorMessage: ${errorMessage},
 checkPasswords: ${checkPasswords}
     ''';
   }

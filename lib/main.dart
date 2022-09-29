@@ -1,8 +1,10 @@
-import 'package:edge_delivery/modules/main_page.dart';
 import 'package:edge_delivery/modules/sign_up_module/presentation/sign_up_form_page.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 

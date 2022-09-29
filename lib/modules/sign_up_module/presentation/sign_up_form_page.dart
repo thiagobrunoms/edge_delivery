@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:edge_delivery/modules/sign_up_module/data/datasources/firestore_signup_datasource.dart';
 import 'package:edge_delivery/modules/sign_up_module/data/datasources/google_signup_datasource.dart';
 import 'package:edge_delivery/modules/sign_up_module/data/datasources/signup_rest_datasource.dart';
 import 'package:edge_delivery/modules/sign_up_module/data/repository/sign_up_repository_impl.dart';
@@ -27,12 +28,17 @@ class _SignUpFormPageState extends State<SignUpFormPage> {
   void initState() {
     super.initState();
 
-    Dio dio = Dio();
+    // Dio dio = Dio();
 
-    SignUpRestDatasource datasource = SignUpRestDatasource(dio: dio);
+    // SignUpRestDatasource datasource = SignUpRestDatasource(dio: dio);
+    FirestoreSignUpDatasource datasource = FirestoreSignUpDatasource();
     SignUpRepository repository = SignUpRepositoryImpl(datasource: datasource);
     SignUpUsecase usecase = SignUpUsecaseImpl(repository: repository);
     controller = SignUpFormController(usecase: usecase);
+
+    reaction((_) => controller.errorMessage, (message) {
+      print('ERROR MESSAGE CAPTURADO!');
+    });
   }
 
   @override
@@ -86,7 +92,11 @@ class _SignUpFormPageState extends State<SignUpFormPage> {
                 MainButtonWidget(
                     callback: fireGoogleSignIn, title: 'Google SignIn'),
               ],
-            )
+            ),
+            if (controller.userEntity != null)
+              Text('Usuário cadastrado: ${controller.userEntity}'),
+            if (controller.errorMessage.isNotEmpty)
+              Text('Falha ao criar conta ${controller.errorMessage}')
           ],
         );
       }),

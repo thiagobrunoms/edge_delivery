@@ -1,11 +1,13 @@
+import 'package:dartz/dartz.dart';
 import 'package:edge_delivery/modules/sign_up_module/data/datasources/sign_up_datasource.dart';
 import 'package:edge_delivery/modules/sign_up_module/domain/usecase/sign_up_usecase.dart';
 import 'package:edge_delivery/modules/sign_up_module/domain/entities/user_entity.dart';
+import 'package:edge_delivery/modules/sign_up_module/failures/signup_failure.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class GoogleSignUpDatasource implements SignUpDataSource {
   @override
-  Future<UserEntity?> signUp(SignUpParam param) async {
+  Future<Either<SignUpFailure, UserEntity>> signUp(SignUpParam param) async {
     GoogleSignInAccount? googleUser =
         await GoogleSignIn(scopes: ["email"]).signIn();
 
@@ -17,9 +19,9 @@ class GoogleSignUpDatasource implements SignUpDataSource {
         "googleId": googleUser.id,
       };
 
-      return UserEntity.fromGoogle(googleData);
+      return right(UserEntity.fromGoogle(googleData));
     }
 
-    return null;
+    return left(SignUpFailure(message: 'Usuário não selecionado!'));
   }
 }
