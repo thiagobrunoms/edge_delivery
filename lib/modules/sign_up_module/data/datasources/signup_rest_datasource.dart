@@ -13,10 +13,10 @@ class SignUpRestDatasource implements SignUpDataSource {
   SignUpRestDatasource({required this.dio});
 
   @override
-  Future<Either<SignUpFailure, UserEntity>> signUp(SignUpParam param) async {
+  Future<Either<SignUpFailure, UserEntity>> signUp({SignUpParam? param}) async {
     try {
       Map<String, dynamic> dataMap = {
-        'name': param.name,
+        'name': param!.name,
         'email': param.email,
         'password': param.password
       };

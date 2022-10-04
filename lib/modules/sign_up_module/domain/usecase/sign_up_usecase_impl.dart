@@ -11,6 +11,6 @@ class SignUpUsecaseImpl implements SignUpUsecase {
 
   @override
   Future<Either<SignUpFailure, UserEntity>> call({SignUpParam? param}) {
-    return repository.signUp(param!);
+    return repository.signUp(signUpParam: param!);
   }
 }

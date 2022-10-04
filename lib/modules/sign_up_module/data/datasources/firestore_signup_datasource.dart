@@ -13,7 +13,7 @@ class FirestoreSignUpDatasource implements SignUpDataSource {
   }
 
   @override
-  Future<Either<SignUpFailure, UserEntity>> signUp(SignUpParam param) async {
+  Future<Either<SignUpFailure, UserEntity>> signUp({SignUpParam? param}) async {
     QuerySnapshot<Map<String, dynamic>> usersCollection =
         await db.collection('users').get();
 
@@ -21,7 +21,7 @@ class FirestoreSignUpDatasource implements SignUpDataSource {
         in usersCollection.docs) {
       var userMap = eachUserDoc.data();
 
-      if (userMap['email'] == param.email) {
+      if (userMap['email'] == param!.email) {
         return left(SignUpFailure(message: 'Usuário com email já existente!'));
       }
     }
@@ -29,7 +29,7 @@ class FirestoreSignUpDatasource implements SignUpDataSource {
     DocumentReference<Map<String, dynamic>> response = await db
         .collection('users')
         .add({
-      'name': param.name,
+      'name': param!.name,
       'email': param.email,
       'password': param.password
     });

@@ -12,7 +12,11 @@ class SignUpRepositoryImpl implements SignUpRepository {
 
   @override
   Future<Either<SignUpFailure, UserEntity>> signUp(
-      SignUpParam signUpParam) async {
-    return await datasource.signUp(signUpParam);
+      {SignUpParam? signUpParam}) async {
+    if (signUpParam != null) {
+      return await datasource.signUp(param: signUpParam);
+    }
+
+    return await datasource.signUp();
   }
 }

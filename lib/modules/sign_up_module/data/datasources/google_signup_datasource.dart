@@ -7,7 +7,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 class GoogleSignUpDatasource implements SignUpDataSource {
   @override
-  Future<Either<SignUpFailure, UserEntity>> signUp(SignUpParam param) async {
+  Future<Either<SignUpFailure, UserEntity>> signUp({SignUpParam? param}) async {
     GoogleSignInAccount? googleUser =
         await GoogleSignIn(scopes: ["email"]).signIn();
 

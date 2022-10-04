@@ -4,6 +4,6 @@ import 'package:edge_delivery/modules/sign_up_module/domain/usecase/sign_up_usec
 import 'package:edge_delivery/modules/sign_up_module/failures/signup_failure.dart';
 
 abstract class SignUpRepository {
-  Future<Either<SignUpFailure, UserEntity>> signUp(SignUpParam signUpParam);
+  Future<Either<SignUpFailure, UserEntity>> signUp({SignUpParam? signUpParam});
   //verify code
 }

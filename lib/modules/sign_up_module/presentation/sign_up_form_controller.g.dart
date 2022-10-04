@@ -130,12 +130,37 @@ mixin _$SignUpFormController on _SignUpFormControllerBase, Store {
     });
   }
 
-  late final _$sendAsyncAction =
-      AsyncAction('_SignUpFormControllerBase.send', context: context);
+  late final _$sendRestAsyncAction =
+      AsyncAction('_SignUpFormControllerBase.sendRest', context: context);
 
   @override
-  Future<void> send() {
-    return _$sendAsyncAction.run(() => super.send());
+  Future<void> sendRest() {
+    return _$sendRestAsyncAction.run(() => super.sendRest());
+  }
+
+  late final _$sendFirestoreAsyncAction =
+      AsyncAction('_SignUpFormControllerBase.sendFirestore', context: context);
+
+  @override
+  Future<void> sendFirestore() {
+    return _$sendFirestoreAsyncAction.run(() => super.sendFirestore());
+  }
+
+  late final _$sendGoogleSignInAsyncAction = AsyncAction(
+      '_SignUpFormControllerBase.sendGoogleSignIn',
+      context: context);
+
+  @override
+  Future<void> sendGoogleSignIn() {
+    return _$sendGoogleSignInAsyncAction.run(() => super.sendGoogleSignIn());
+  }
+
+  late final _$_sendAsyncAction =
+      AsyncAction('_SignUpFormControllerBase._send', context: context);
+
+  @override
+  Future<void> _send() {
+    return _$_sendAsyncAction.run(() => super._send());
   }
 
   late final _$_SignUpFormControllerBaseActionController =
