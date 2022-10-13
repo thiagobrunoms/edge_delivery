@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class MyBottonNavBar extends StatefulWidget {
   const MyBottonNavBar({super.key});
@@ -20,16 +21,22 @@ class _MyBottonNavBarState extends State<MyBottonNavBar> {
         BottomNavigationBarItem(icon: Icon(Icons.payment), label: 'Payment'),
       ],
       onTap: (position) {
+        print('position selected: $position');
         setState(() {
           selectedBarIndex = position;
 
-          switch (selectedBarIndex) {
-            case value:
-              
-              break;
-            default:
-          }
-
+          switch (position) {
+          case 0:
+            Modular.to.navigate('./request_home');
+            break;
+          case 1:
+            Modular.to.navigate('./delivery_history');
+            break;
+          case 2:
+            Modular.to.navigate('./payment');
+            break;
+          default:
+        }
         });
       },
     );

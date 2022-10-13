@@ -1,17 +1,26 @@
+import 'package:edge_delivery/modules/session_controller.dart';
 import 'package:edge_delivery/modules/sign_up_module/domain/entities/user_entity.dart';
 import 'package:edge_delivery/shared/widgets/buttons/main_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class RequestDeliveryPage extends StatefulWidget {
-  final UserEntity userEntity;
-  const RequestDeliveryPage({super.key, required this.userEntity});
+  const RequestDeliveryPage({super.key});
 
   @override
   State<RequestDeliveryPage> createState() => _RequestDeliveryPageState();
 }
 
 class _RequestDeliveryPageState extends State<RequestDeliveryPage> {
+  late SessionController sessionController;
   int selectedBarIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    sessionController = Modular.get<SessionController>();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +49,7 @@ class _RequestDeliveryPageState extends State<RequestDeliveryPage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(widget.userEntity.name),
+          Text(sessionController.userEntity.name),
           const Icon(Icons.menu)
         ],
       ),
@@ -59,7 +68,7 @@ class _RequestDeliveryPageState extends State<RequestDeliveryPage> {
   Widget _buildWelcomeMessage() {
     return Column(
       children: [
-        Text('Good day, ${widget.userEntity.name}', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),),
+        Text('Good day, ${sessionController.userEntity.name}', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),),
         const SizedBox(height: 10,),
         const Text('Want to send something today?', style: TextStyle(fontSize: 14.0),),
         const Text('Request new Delivery?', style: TextStyle(fontSize: 14.0),),

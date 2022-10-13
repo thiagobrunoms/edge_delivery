@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:edge_delivery/modules/session_controller.dart';
 import 'package:edge_delivery/modules/sign_up_module/data/datasources/firestore_signup_datasource.dart';
 import 'package:edge_delivery/modules/sign_up_module/data/datasources/google_signup_datasource.dart';
 import 'package:edge_delivery/modules/sign_up_module/data/datasources/signup_rest_datasource.dart';
@@ -58,8 +59,7 @@ class _SignUpFormPageState extends State<SignUpFormPage> {
   }
 
   void handleSuccess(UserEntity? userEntity) {
-    // Navigator.pushNamed(context, '/toDeliveryPage', arguments: userEntity);
-    Modular.to.navigate('/delivery/', arguments: userEntity);
+    Modular.to.navigate('/delivery/request_home');
   }
 
   @override
@@ -109,7 +109,7 @@ class _SignUpFormPageState extends State<SignUpFormPage> {
                         controller.requestFuture!.status == FutureStatus.pending
                     ? const CircularProgressIndicator()
                     : MainButtonWidget(
-                        callback: controller.sendFirestore, title: 'Sign Up'),
+                        callback: controller.sendFirestore, title: 'Sign Up Firebase'),
                 MainButtonWidget(
                     callback: controller.sendGoogleSignIn,
                     title: 'Google SignIn'),
@@ -117,7 +117,9 @@ class _SignUpFormPageState extends State<SignUpFormPage> {
             ),
             MainButtonWidget(
                     callback: () {
-                       Modular.to.navigate('/delivery/request_home', arguments: UserEntity(name: 'THIAGO', email: 'THIAGO@GMAI.CIM'));
+                      var session = Modular.get<SessionController>();
+                      session.userEntity = UserEntity(name: 'Egde User', email: 'edgeuser@gmail.com');
+                      Modular.to.navigate('/delivery/request_home');
                     },
                     title: 'TESTE'),
           ],

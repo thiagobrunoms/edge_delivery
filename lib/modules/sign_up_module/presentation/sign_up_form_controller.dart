@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:edge_delivery/modules/session_controller.dart';
 import 'package:edge_delivery/modules/sign_up_module/data/datasources/firestore_signup_datasource.dart';
 import 'package:edge_delivery/modules/sign_up_module/data/datasources/google_signup_datasource.dart';
 import 'package:edge_delivery/modules/sign_up_module/data/datasources/sign_up_datasource.dart';
@@ -100,6 +101,9 @@ abstract class _SignUpFormControllerBase with Store {
       errorMessage = failure.message;
     }, (user) {
       userEntity = user;
+      
+      var sessionController = Modular.get<SessionController>();
+      sessionController.userEntity = userEntity!;
     });
   }
 }
