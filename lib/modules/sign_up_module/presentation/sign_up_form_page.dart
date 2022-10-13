@@ -115,6 +115,11 @@ class _SignUpFormPageState extends State<SignUpFormPage> {
                     title: 'Google SignIn'),
               ],
             ),
+            MainButtonWidget(
+                    callback: () {
+                       Modular.to.navigate('/delivery/request_home', arguments: UserEntity(name: 'THIAGO', email: 'THIAGO@GMAI.CIM'));
+                    },
+                    title: 'TESTE'),
           ],
         );
       }),
