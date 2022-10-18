@@ -1,15 +1,36 @@
-import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:mobx/mobx.dart';
+part 'delivery_history_controller.g.dart';
 
-class DeliveryHistoryController {
-  StreamController<int> numberController = StreamController.broadcast();
+class DeliveryHistoryController = _DeliveryHistoryControllerBase with _$DeliveryHistoryController;
 
-  Stream<int> get numberStream => numberController.stream;
+abstract class _DeliveryHistoryControllerBase with Store {
+  FirebaseFirestore instance = FirebaseFirestore.instance;
 
-  Stream<int> get numberTimes2Stream => numberController.stream.map((number) => number * 2);
+  _DeliveryHistoryControllerBase() {
+    filterDeliveryByDate();
+  }  
 
-  Stream<int> get numberEven2Stream => numberController.stream.where((number) => number % 2 == 0);
+  @observable
+  DateTime currentDateTime = DateTime.now();
 
-  void addContent(int number) {
-    numberController.sink.add(number);
+  @observable
+  int deliveryQuantity = 0;
+
+  void fowardDate() {
+    currentDateTime = currentDateTime.add(const Duration(days: 31));
+    filterDeliveryByDate();
+  }
+
+  void backwardDate() {
+    currentDateTime = currentDateTime.subtract(const Duration(days: 31));
+    filterDeliveryByDate();
+  }
+
+  Future<void> filterDeliveryByDate() async {
+    QuerySnapshot<Map<String, dynamic>> result = await instance.collection('deliveries').where('address', isEqualTo: "Rua ALTERADA").get();
+    List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = result.docs;
+    deliveryQuantity = docs.length;
+    print('Quantity = ${deliveryQuantity}');
   }
 }
