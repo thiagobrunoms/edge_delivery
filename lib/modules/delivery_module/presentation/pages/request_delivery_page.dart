@@ -1,3 +1,4 @@
+import 'package:edge_delivery/modules/delivery_module/presentation/widgets/default_app_bar.dart';
 import 'package:edge_delivery/modules/session_controller.dart';
 import 'package:edge_delivery/modules/sign_up_module/domain/entities/user_entity.dart';
 import 'package:edge_delivery/shared/widgets/buttons/main_button.dart';
@@ -30,7 +31,7 @@ class _RequestDeliveryPageState extends State<RequestDeliveryPage> {
             width: MediaQuery.of(context).size.width,
             child: Column(
               children: [
-                _buildAppBar(),
+                const DefaultAppBar(),
                 _buildCenterImage(),
                 const SizedBox(height: 20),
                 _buildWelcomeMessage(),
@@ -40,19 +41,6 @@ class _RequestDeliveryPageState extends State<RequestDeliveryPage> {
             ),
           ),
         ),
-    );
-  }
-
-  Widget _buildAppBar() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(sessionController.userEntity.name),
-          const Icon(Icons.menu)
-        ],
-      ),
     );
   }
 

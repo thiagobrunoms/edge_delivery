@@ -43,6 +43,7 @@ dependencies:
   cloud_firestore: ^3.5.0
   dartz: ^0.10.1
   flutter_modular: ^5.0.3
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:

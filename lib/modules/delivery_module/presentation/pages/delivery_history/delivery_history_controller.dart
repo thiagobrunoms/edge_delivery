@@ -1,15 +1,31 @@
-import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:mobx/mobx.dart';
+part 'delivery_history_controller.g.dart';
 
-class DeliveryHistoryController {
-  StreamController<int> numberController = StreamController.broadcast();
+class DeliveryHistoryController = _DeliveryHistoryControllerBase with _$DeliveryHistoryController;
 
-  Stream<int> get numberStream => numberController.stream;
+abstract class _DeliveryHistoryControllerBase with Store {
+  FirebaseFirestore instance = FirebaseFirestore.instance;
+  @observable
+  DateTime currentDateTime = DateTime.now();
 
-  Stream<int> get numberTimes2Stream => numberController.stream.map((number) => number * 2);
+  void forwardDateTime() {
+    currentDateTime = currentDateTime.add(const Duration(days: 31));
+  }
 
-  Stream<int> get numberEven2Stream => numberController.stream.where((number) => number % 2 == 0);
+  void backwardDateTime() {
+    currentDateTime = currentDateTime.subtract(const Duration(days: 31));
+  }
 
-  void addContent(int number) {
-    numberController.sink.add(number);
+  Future<void> filter() async {
+    print('->> ${Timestamp.fromDate(DateTime(2022, 10, 18))}');
+
+    DateTime now = DateTime.now();
+    QuerySnapshot qn = await instance.collection('deliveries')
+      .where('date_str', isEqualTo: '18/10')
+      .get();
+
+
+    print('quantidade filtrada = ${qn.docs.length}');
   }
 }
