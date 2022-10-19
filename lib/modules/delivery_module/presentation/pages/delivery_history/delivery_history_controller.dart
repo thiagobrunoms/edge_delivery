@@ -29,13 +29,15 @@ abstract class _DeliveryHistoryControllerBase with Store {
 
   Future<void> filterDeliveryByDate() async {
     print('Filtering by ${currentDateTime}');
+    
     QuerySnapshot<Map<String, dynamic>> result = await 
       instance.collection('deliveries')
-      .where('date', isGreaterThanOrEqualTo: currentDateTime)
+      .where('date', isGreaterThanOrEqualTo: DateTime(2022, 10, 18), isLessThan: DateTime(2022, 10, 19))
       .get();
 
     List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = result.docs;
     deliveryQuantity = docs.length;
     print('Quantity = ${deliveryQuantity}');
+    print('Object ${docs.first.data()}');
   }
 }
