@@ -12,7 +12,7 @@ abstract class _DeliveryHistoryControllerBase with Store {
   }  
 
   @observable
-  DateTime currentDateTime = DateTime.now();
+  DateTime currentDateTime = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
 
   @observable
   int deliveryQuantity = 0;
@@ -28,7 +28,12 @@ abstract class _DeliveryHistoryControllerBase with Store {
   }
 
   Future<void> filterDeliveryByDate() async {
-    QuerySnapshot<Map<String, dynamic>> result = await instance.collection('deliveries').where('address', isEqualTo: "Rua ALTERADA").get();
+    print('Filtering by ${currentDateTime}');
+    QuerySnapshot<Map<String, dynamic>> result = await 
+      instance.collection('deliveries')
+      .where('date', isGreaterThanOrEqualTo: currentDateTime)
+      .get();
+
     List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = result.docs;
     deliveryQuantity = docs.length;
     print('Quantity = ${deliveryQuantity}');
