@@ -18,7 +18,6 @@ class _DeliveryDetailsPageState extends State<DeliveryDetailsPage> {
   @override
   void initState() {
     super.initState();
-
     controller.setDeliveryid(widget.delivery.id);
   }
 
@@ -31,7 +30,6 @@ class _DeliveryDetailsPageState extends State<DeliveryDetailsPage> {
             builder: ((context) {
               if (controller.listenToDelivery.data != null) {
                 Delivery delivery = controller.listenToDelivery.data!;
-
                 return Column(
                   children: [
                     _buildAppBar(delivery),
@@ -39,10 +37,7 @@ class _DeliveryDetailsPageState extends State<DeliveryDetailsPage> {
                     _buildDeliveryDetails(delivery),
                   ],
                 );
-                
-                
               }
-              
               return Container();
             })),
         ),

@@ -25,42 +25,6 @@ mixin _$DeliveryHistoryController on _DeliveryHistoryControllerBase, Store {
     });
   }
 
-  late final _$deliveriesMapAtom = Atom(
-      name: '_DeliveryHistoryControllerBase.deliveriesMap', context: context);
-
-  @override
-  ObservableMap<DateTime, List<Delivery>> get deliveriesMap {
-    _$deliveriesMapAtom.reportRead();
-    return super.deliveriesMap;
-  }
-
-  @override
-  set deliveriesMap(ObservableMap<DateTime, List<Delivery>> value) {
-    _$deliveriesMapAtom.reportWrite(value, super.deliveriesMap, () {
-      super.deliveriesMap = value;
-    });
-  }
-
-  late final _$observableFutureAtom = Atom(
-      name: '_DeliveryHistoryControllerBase.observableFuture',
-      context: context);
-
-  @override
-  ObservableFuture<List<QueryDocumentSnapshot<Map<String, dynamic>>>>?
-      get observableFuture {
-    _$observableFutureAtom.reportRead();
-    return super.observableFuture;
-  }
-
-  @override
-  set observableFuture(
-      ObservableFuture<List<QueryDocumentSnapshot<Map<String, dynamic>>>>?
-          value) {
-    _$observableFutureAtom.reportWrite(value, super.observableFuture, () {
-      super.observableFuture = value;
-    });
-  }
-
   late final _$deliveriesMapStreamAtom = Atom(
       name: '_DeliveryHistoryControllerBase.deliveriesMapStream',
       context: context);
@@ -98,32 +62,12 @@ mixin _$DeliveryHistoryController on _DeliveryHistoryControllerBase, Store {
     });
   }
 
-  late final _$deliveryQuantityAtom = Atom(
-      name: '_DeliveryHistoryControllerBase.deliveryQuantity',
-      context: context);
-
-  @override
-  int get deliveryQuantity {
-    _$deliveryQuantityAtom.reportRead();
-    return super.deliveryQuantity;
-  }
-
-  @override
-  set deliveryQuantity(int value) {
-    _$deliveryQuantityAtom.reportWrite(value, super.deliveryQuantity, () {
-      super.deliveryQuantity = value;
-    });
-  }
-
   @override
   String toString() {
     return '''
 currentDateTime: ${currentDateTime},
-deliveriesMap: ${deliveriesMap},
-observableFuture: ${observableFuture},
 deliveriesMapStream: ${deliveriesMapStream},
-statusMap: ${statusMap},
-deliveryQuantity: ${deliveryQuantity}
+statusMap: ${statusMap}
     ''';
   }
 }

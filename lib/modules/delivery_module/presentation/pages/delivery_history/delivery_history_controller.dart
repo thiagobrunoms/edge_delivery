@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:edge_delivery/modules/delivery_module/domain/delivery.dart';
 import 'package:edge_delivery/modules/delivery_module/presentation/pages/delivery_history/delivery_history_page.dart';
 import 'package:mobx/mobx.dart';
 part 'delivery_history_controller.g.dart';
@@ -17,20 +16,10 @@ abstract class _DeliveryHistoryControllerBase with Store {
   DateTime currentDateTime = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
 
   @observable
-  ObservableMap<DateTime, List<Delivery>> deliveriesMap = ObservableMap();
-
-  @observable
-  ObservableFuture<List<QueryDocumentSnapshot<Map<String, dynamic>>>>? observableFuture;
-
-  @observable
   ObservableMap<DateTime, ObservableStream<QuerySnapshot<Map<String, dynamic>>>> deliveriesMapStream = ObservableMap();
 
   @observable
   ObservableMap<DeliveryStatus, int> statusMap = ObservableMap.of({DeliveryStatus.Delivered : 0, DeliveryStatus.Failed : 0, DeliveryStatus.InProgress : 0});
-  
-
-  @observable
-  int deliveryQuantity = 0;
 
   void fowardDate() {
     currentDateTime = currentDateTime.add(const Duration(days: 31));
@@ -43,8 +32,6 @@ abstract class _DeliveryHistoryControllerBase with Store {
   }
 
   Future<void> filterDeliveryByDate() async {
-    print('Filtering by ${currentDateTime}');
-
     statusMap.clear();
     statusMap.addEntries([MapEntry(DeliveryStatus.Delivered, 0), MapEntry(DeliveryStatus.Failed, 0), MapEntry(DeliveryStatus.InProgress, 0)]);
     deliveriesMapStream.clear();
@@ -52,7 +39,8 @@ abstract class _DeliveryHistoryControllerBase with Store {
     DateTime startDateTime = DateTime(currentDateTime.year, currentDateTime.month, 1);
     for (int i = 0; i < 31; i++) {
       DateTime dateToLoad = startDateTime.add(Duration(days: i));
-      Stream<QuerySnapshot<Map<String, dynamic>>> stream = instance.collection('deliveries').where('date', isGreaterThanOrEqualTo: dateToLoad, isLessThan: dateToLoad.add(const Duration(days: 1))).snapshots();
+      Stream<QuerySnapshot<Map<String, dynamic>>> stream = 
+        instance.collection('deliveries').where('date', isGreaterThanOrEqualTo: dateToLoad, isLessThan: dateToLoad.add(const Duration(days: 1))).snapshots();
 
       deliveriesMapStream[dateToLoad] = ObservableStream(stream);
 

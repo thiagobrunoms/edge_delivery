@@ -27,7 +27,6 @@ class DeliveryHistoryPage extends StatefulWidget {
 class _DeliveryHistoryPageState extends State<DeliveryHistoryPage> {
   late FirebaseFirestore instance;
   late DeliveryHistoryController controller;
-  int count = 0;
 
   @override
   void initState() {
@@ -48,10 +47,6 @@ class _DeliveryHistoryPageState extends State<DeliveryHistoryPage> {
               _buildDateFilter(),
               _buildDeliveryStatus(),
               _buildDeliveries(),
-              controller.observableFuture != null && 
-                controller.observableFuture!.status == FutureStatus.pending &&
-                controller.observableFuture!.status != FutureStatus.fulfilled ?
-                  const CircularProgressIndicator() : Container()
             ],
           ),
         )
@@ -129,11 +124,9 @@ class _DeliveryHistoryPageState extends State<DeliveryHistoryPage> {
             if (querySnapshot != null) {
               List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = querySnapshot.docs;
 
-              print('docs de ${controller.currentDateTime} = length ${docs.length}');
               if (docs.isNotEmpty) {
-                docs.removeWhere(((element) => element.data()['status'] == null ));
+                // docs.removeWhere(((element) => element.data()['status'] == null ));
                 if (docs.isNotEmpty) {
-                  print('Size after removing: ${docs.length}');
                   quantity += 1;
                   return _buildDeliveryCard(entry.key, docs.map((qs) => Delivery.fromMap( qs.id, qs.data() ) ).toList() );
                 }
@@ -143,7 +136,6 @@ class _DeliveryHistoryPageState extends State<DeliveryHistoryPage> {
             return Container();
           }).toList();
 
-          print('Quantidade de DIAS entregas: ${deliveryWidgetsList}');
           if (quantity > 0) {
             return Column(
               children: deliveryWidgetsList,
@@ -151,9 +143,7 @@ class _DeliveryHistoryPageState extends State<DeliveryHistoryPage> {
           }
 
           return const Center(child: Text('Não há entregas para hoje!'));
-
         }
-
         return const CircularProgressIndicator();
       }
     );
@@ -184,7 +174,7 @@ class _DeliveryHistoryPageState extends State<DeliveryHistoryPage> {
               ),
               InkWell(
                 onTap: () {
-                  Modular.to.navigate('./delivery_details', arguments: deliveries.first);
+                  Modular.to.pushNamed('/delivery_details', arguments: deliveries.first);
                 },
                 child: const Icon(Icons.arrow_forward_ios, size: 15,))
             ],

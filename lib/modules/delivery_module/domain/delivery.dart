@@ -16,7 +16,6 @@ class Delivery {
 
     List<DeliveryStep> steps = [];
     if (data['steps'] != null) {
-      print('steps ${data['steps']}');
       steps = (data['steps'] as List).map((eachMap) => DeliveryStep.fromMap(eachMap) ).toList();
     }
 
