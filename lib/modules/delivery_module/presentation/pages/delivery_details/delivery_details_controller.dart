@@ -8,10 +8,16 @@ class DeliveryDetailsController = _DeliveryDetailsControllerBase with _$Delivery
 abstract class _DeliveryDetailsControllerBase with Store {
   FirebaseFirestore instance = FirebaseFirestore.instance;
 
+  @observable
   String deliveryId = "";
+
+  @action
   void setDeliveryid (String deliveryId) {
     this.deliveryId = deliveryId;
   }
 
-  ObservableStream<DocumentSnapshot<Map<String, dynamic>>> get listenToDelivery => ObservableStream(instance.collection('deliveries').doc(deliveryId).snapshots() );
+  @computed
+  ObservableStream<Delivery> get listenToDelivery => 
+    ObservableStream(instance.collection('deliveries').doc(deliveryId).snapshots()
+      .map<Delivery>((event) => Delivery.fromMap(deliveryId, event.data()!)));
 }

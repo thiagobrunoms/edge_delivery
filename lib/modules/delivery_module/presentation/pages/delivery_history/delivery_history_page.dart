@@ -121,17 +121,20 @@ class _DeliveryHistoryPageState extends State<DeliveryHistoryPage> {
   Widget _buildDeliveries() {
     return Observer(
       builder: (context) {
+        int quantity = 0;
+
         if (controller.deliveriesMapStream.isNotEmpty) {
           List<Widget> deliveryWidgetsList = controller.deliveriesMapStream.entries.map((entry) {
             QuerySnapshot<Map<String, dynamic>>? querySnapshot = entry.value.data;
             if (querySnapshot != null) {
               List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = querySnapshot.docs;
 
+              print('docs de ${controller.currentDateTime} = length ${docs.length}');
               if (docs.isNotEmpty) {
-                
                 docs.removeWhere(((element) => element.data()['status'] == null ));
                 if (docs.isNotEmpty) {
                   print('Size after removing: ${docs.length}');
+                  quantity += 1;
                   return _buildDeliveryCard(entry.key, docs.map((qs) => Delivery.fromMap( qs.id, qs.data() ) ).toList() );
                 }
               }
@@ -140,9 +143,15 @@ class _DeliveryHistoryPageState extends State<DeliveryHistoryPage> {
             return Container();
           }).toList();
 
-          return Column(
-            children: deliveryWidgetsList,
-          );
+          print('Quantidade de DIAS entregas: ${deliveryWidgetsList}');
+          if (quantity > 0) {
+            return Column(
+              children: deliveryWidgetsList,
+            );
+          }
+
+          return const Center(child: Text('Não há entregas para hoje!'));
+
         }
 
         return const CircularProgressIndicator();
