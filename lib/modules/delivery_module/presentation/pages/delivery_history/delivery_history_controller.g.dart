@@ -25,20 +25,40 @@ mixin _$DeliveryHistoryController on _DeliveryHistoryControllerBase, Store {
     });
   }
 
-  late final _$deliveryQuantityAtom = Atom(
-      name: '_DeliveryHistoryControllerBase.deliveryQuantity',
+  late final _$deliveriesMapStreamAtom = Atom(
+      name: '_DeliveryHistoryControllerBase.deliveriesMapStream',
       context: context);
 
   @override
-  int get deliveryQuantity {
-    _$deliveryQuantityAtom.reportRead();
-    return super.deliveryQuantity;
+  ObservableMap<DateTime, ObservableStream<QuerySnapshot<Map<String, dynamic>>>>
+      get deliveriesMapStream {
+    _$deliveriesMapStreamAtom.reportRead();
+    return super.deliveriesMapStream;
   }
 
   @override
-  set deliveryQuantity(int value) {
-    _$deliveryQuantityAtom.reportWrite(value, super.deliveryQuantity, () {
-      super.deliveryQuantity = value;
+  set deliveriesMapStream(
+      ObservableMap<DateTime,
+              ObservableStream<QuerySnapshot<Map<String, dynamic>>>>
+          value) {
+    _$deliveriesMapStreamAtom.reportWrite(value, super.deliveriesMapStream, () {
+      super.deliveriesMapStream = value;
+    });
+  }
+
+  late final _$statusMapAtom =
+      Atom(name: '_DeliveryHistoryControllerBase.statusMap', context: context);
+
+  @override
+  ObservableMap<DeliveryStatus, int> get statusMap {
+    _$statusMapAtom.reportRead();
+    return super.statusMap;
+  }
+
+  @override
+  set statusMap(ObservableMap<DeliveryStatus, int> value) {
+    _$statusMapAtom.reportWrite(value, super.statusMap, () {
+      super.statusMap = value;
     });
   }
 
@@ -46,7 +66,8 @@ mixin _$DeliveryHistoryController on _DeliveryHistoryControllerBase, Store {
   String toString() {
     return '''
 currentDateTime: ${currentDateTime},
-deliveryQuantity: ${deliveryQuantity}
+deliveriesMapStream: ${deliveriesMapStream},
+statusMap: ${statusMap}
     ''';
   }
 }

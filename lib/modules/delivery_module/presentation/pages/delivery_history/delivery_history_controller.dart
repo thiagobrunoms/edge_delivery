@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:edge_delivery/modules/delivery_module/presentation/pages/delivery_history/delivery_history_page.dart';
 import 'package:mobx/mobx.dart';
 part 'delivery_history_controller.g.dart';
 
@@ -6,6 +7,8 @@ class DeliveryHistoryController = _DeliveryHistoryControllerBase with _$Delivery
 
 abstract class _DeliveryHistoryControllerBase with Store {
   FirebaseFirestore instance = FirebaseFirestore.instance;
+
+  Map<DeliveryStatus, int> deliveryStatusMap = {DeliveryStatus.Delivered: 0, DeliveryStatus.Failed: 0, DeliveryStatus.InProgress: 0};
 
   _DeliveryHistoryControllerBase() {
     filterDeliveryByDate();
@@ -15,7 +18,10 @@ abstract class _DeliveryHistoryControllerBase with Store {
   DateTime currentDateTime = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
 
   @observable
-  int deliveryQuantity = 0;
+  ObservableMap<DateTime, ObservableStream<QuerySnapshot<Map<String, dynamic>>>> deliveriesMapStream = ObservableMap();
+
+  @observable
+  ObservableMap<DeliveryStatus, int> statusMap = ObservableMap.of({DeliveryStatus.Delivered: 0, DeliveryStatus.Failed: 0, DeliveryStatus.InProgress: 0});
 
   void fowardDate() {
     currentDateTime = currentDateTime.add(const Duration(days: 31));
@@ -29,15 +35,38 @@ abstract class _DeliveryHistoryControllerBase with Store {
 
   Future<void> filterDeliveryByDate() async {
     print('Filtering by ${currentDateTime}');
-    
-    QuerySnapshot<Map<String, dynamic>> result = await 
-      instance.collection('deliveries')
-      .where('date', isGreaterThanOrEqualTo: DateTime(2022, 10, 18), isLessThan: DateTime(2022, 10, 19))
-      .get();
 
-    List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = result.docs;
-    deliveryQuantity = docs.length;
-    print('Quantity = ${deliveryQuantity}');
-    print('Object ${docs.first.data()}');
+    deliveriesMapStream.clear();
+    statusMap = ObservableMap.of(deliveryStatusMap);
+    
+    Stream<QuerySnapshot<Map<String, dynamic>>> result =  
+      instance.collection('deliveries')
+      .where('date', isGreaterThanOrEqualTo: DateTime(currentDateTime.year, currentDateTime.month, 1), isLessThan: DateTime(currentDateTime.year, currentDateTime.month, 31))
+      .snapshots();
+
+    for (int i = 0; i < 31; i++) {
+      DateTime dateToLoad = DateTime(currentDateTime.year, currentDateTime.month, i);
+
+      Stream<QuerySnapshot<Map<String, dynamic>>> deliveryStreamByDate =  
+        instance.collection('deliveries')
+          .where('date', isGreaterThanOrEqualTo: dateToLoad, isLessThan: dateToLoad.add(const Duration(days: 1)))
+          .snapshots();
+
+      deliveriesMapStream[dateToLoad] = ObservableStream(deliveryStreamByDate);
+
+      deliveriesMapStream[dateToLoad]!.listen((value) {
+
+        if (value.docs.isNotEmpty) {
+          print('date ${dateToLoad} -> delivery ${value.docs.length}');
+
+          value.docs.forEach((eachDoc) {
+            String statusStr = eachDoc.data()['status'];
+            DeliveryStatus status = DeliveryStatus.values.firstWhere((statusOb) => statusOb.name == statusStr);
+
+            statusMap[status] = statusMap[status]! + 1; 
+          });
+        }
+      });
+    }
   }
 }

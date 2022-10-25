@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:edge_delivery/modules/delivery_module/domain/delivery.dart';
 import 'package:edge_delivery/modules/delivery_module/presentation/pages/delivery_history/delivery_history_controller.dart';
 import 'package:edge_delivery/modules/delivery_module/presentation/widgets/default_app_bar.dart';
 import 'package:flutter/material.dart';
@@ -89,13 +90,17 @@ class _DeliveryHistoryPageState extends State<DeliveryHistoryPage> {
   }
 
   Widget _buildDeliveryStatus() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        buildStatusContent(DeliveryStatus.Delivered, 50),
-        buildStatusContent(DeliveryStatus.InProgress, 50),
-        buildStatusContent(DeliveryStatus.Failed, 50),
-      ],
+    return Observer(
+      builder: (context) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            buildStatusContent(DeliveryStatus.Delivered, controller.statusMap[DeliveryStatus.Delivered]!),
+            buildStatusContent(DeliveryStatus.InProgress, controller.statusMap[DeliveryStatus.InProgress]!),
+            buildStatusContent(DeliveryStatus.Failed, controller.statusMap[DeliveryStatus.Failed]!),
+          ],
+        );
+      }
     );
   }
 
@@ -110,16 +115,31 @@ class _DeliveryHistoryPageState extends State<DeliveryHistoryPage> {
   }
 
   Widget _buildDeliveries() {
-    return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-      stream: instance.collection('deliveries').snapshots(),
-      builder: (_, snapshot) {
-        if (snapshot.hasData) {
-          QuerySnapshot<Map<String, dynamic>> data = snapshot.data!;
-          
-          List<Widget> deliveryWidgetsList = data.docs.map((eachQuerySnapshot) => _buildDeliveryCard(eachQuerySnapshot) ).toList();
+    return Observer(
+      builder: (context) {
+        if (controller.deliveriesMapStream.isNotEmpty) {
+          List<Widget> cards = controller.deliveriesMapStream.entries.map((entry) {
+            
+            DateTime date = entry.key;
+            QuerySnapshot<Map<String, dynamic>>? querySnapshot = entry.value.data;
+            if (querySnapshot != null) {
+              List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = querySnapshot.docs;
+
+              if (docs.isNotEmpty) {
+                int quantity = docs.length;
+                
+                return _buildDeliveryCard(
+                  date, 
+                  docs.map((eachFirebasedDoc) =>  Delivery.fromMap(eachFirebasedDoc.id, eachFirebasedDoc.data())).toList());
+              }
+            }
+
+            return Container();
+
+          } ).toList();
 
           return Column(
-            children: deliveryWidgetsList,
+            children: cards,
           );
         }
 
@@ -128,17 +148,13 @@ class _DeliveryHistoryPageState extends State<DeliveryHistoryPage> {
     );
   }
 
-  Widget _buildDeliveryCard(QueryDocumentSnapshot<Map<String, dynamic>> querySnapshot) {
-    DateFormat df = DateFormat('MMM, y');
-    Map<String, dynamic> deliveryMap = querySnapshot.data();
-
-    Timestamp timestamp = deliveryMap['date'];
-    DateTime deliveryDateTime = timestamp.toDate();
+  Widget _buildDeliveryCard(DateTime date, List<Delivery> deliveryList) {
+    DateFormat df = DateFormat('d MMM, y');
 
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.9,
       child: Card(
-        color: deliveryDateTime.day == DateTime.now().day ? const Color.fromARGB(255, 225, 233, 241) : Colors.white,
+        color: date.day == DateTime.now().day ? const Color.fromARGB(255, 225, 233, 241) : Colors.white,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Row(
@@ -147,10 +163,10 @@ class _DeliveryHistoryPageState extends State<DeliveryHistoryPage> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('${df.format(deliveryDateTime)}'),
+                  Text('${df.format(date)}'),
                   Observer(
                     builder: (context) {
-                      return Text("${controller.deliveryQuantity} deliveries");
+                      return Text("${deliveryList.length} deliveries");
                     }
                   ),
                 ],
