@@ -171,7 +171,11 @@ class _DeliveryHistoryPageState extends State<DeliveryHistoryPage> {
                   ),
                 ],
               ),
-              const Icon(Icons.arrow_forward_ios, size: 15,)
+              InkWell(
+                onTap: () {
+                  Modular.to.pushNamed('./delivery_details', arguments: deliveryList.first);
+                },
+                child: const Icon(Icons.arrow_forward_ios, size: 15,))
             ],
           ),
         ),

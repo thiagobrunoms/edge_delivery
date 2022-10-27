@@ -1,4 +1,5 @@
 import 'package:edge_delivery/modules/delivery_module/delivery_home_page.dart';
+import 'package:edge_delivery/modules/delivery_module/presentation/pages/delivery_details/delivery_details_page.dart';
 import 'package:edge_delivery/modules/delivery_module/presentation/pages/delivery_history/delivery_history_controller.dart';
 import 'package:edge_delivery/modules/delivery_module/presentation/pages/delivery_history/delivery_history_page.dart';
 import 'package:edge_delivery/modules/delivery_module/presentation/pages/payment_page.dart';
@@ -17,6 +18,7 @@ class DeliveryModule extends Module {
           ChildRoute('/request_home', child: (context, args) => const RequestDeliveryPage()),
           ChildRoute('/delivery_history', child: (context, args) => const DeliveryHistoryPage()),
           ChildRoute('/payment', child: (context, args) => const PaymentPage()),
+          ChildRoute('/delivery_details', child: (context, args) => DeliveryDetailsPage(delivery: args.data))
         ] ),
       ];
 }

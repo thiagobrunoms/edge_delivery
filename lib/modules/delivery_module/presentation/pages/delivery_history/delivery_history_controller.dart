@@ -39,12 +39,12 @@ abstract class _DeliveryHistoryControllerBase with Store {
     deliveriesMapStream.clear();
     statusMap = ObservableMap.of(deliveryStatusMap);
     
-    Stream<QuerySnapshot<Map<String, dynamic>>> result =  
-      instance.collection('deliveries')
-      .where('date', isGreaterThanOrEqualTo: DateTime(currentDateTime.year, currentDateTime.month, 1), isLessThan: DateTime(currentDateTime.year, currentDateTime.month, 31))
-      .snapshots();
+    // Stream<QuerySnapshot<Map<String, dynamic>>> result =  
+    //   instance.collection('deliveries')
+    //   .where('date', isGreaterThanOrEqualTo: DateTime(currentDateTime.year, currentDateTime.month, 1), isLessThan: DateTime(currentDateTime.year, currentDateTime.month, 31))
+    //   .snapshots();
 
-    for (int i = 0; i < 31; i++) {
+    for (int i = 1; i < 31; i++) {
       DateTime dateToLoad = DateTime(currentDateTime.year, currentDateTime.month, i);
 
       Stream<QuerySnapshot<Map<String, dynamic>>> deliveryStreamByDate =  
@@ -55,14 +55,14 @@ abstract class _DeliveryHistoryControllerBase with Store {
       deliveriesMapStream[dateToLoad] = ObservableStream(deliveryStreamByDate);
 
       deliveriesMapStream[dateToLoad]!.listen((value) {
-
         if (value.docs.isNotEmpty) {
           print('date ${dateToLoad} -> delivery ${value.docs.length}');
-
+          
           value.docs.forEach((eachDoc) {
             String statusStr = eachDoc.data()['status'];
             DeliveryStatus status = DeliveryStatus.values.firstWhere((statusOb) => statusOb.name == statusStr);
 
+            print('quantidade atual para ${status.name} = ${statusMap[status]}');
             statusMap[status] = statusMap[status]! + 1; 
           });
         }
