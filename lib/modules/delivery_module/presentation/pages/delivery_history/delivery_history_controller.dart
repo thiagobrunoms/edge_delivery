@@ -55,7 +55,6 @@ abstract class _DeliveryHistoryControllerBase with Store {
       deliveriesMapStream[dateToLoad] = ObservableStream(deliveryStreamByDate);
 
       deliveriesMapStream[dateToLoad]!.listen((value) {
-
         if (value.docs.isNotEmpty) {
           print('date ${dateToLoad} -> delivery ${value.docs.length}');
 
