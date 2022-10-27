@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:edge_delivery/modules/delivery_module/delivery_module.dart';
+import 'package:edge_delivery/modules/location_module/location_module.dart';
 import 'package:edge_delivery/modules/session_controller.dart';
 import 'package:edge_delivery/modules/sign_up_module/signup_module.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -13,7 +14,8 @@ class AppModule extends Module {
 
   @override
   List<ModularRoute> get routes => [
-        ModuleRoute('/', module: SignUpModule()),
-        ModuleRoute('/delivery/', module: DeliveryModule()),
+    ModuleRoute('/', module: LocationModule()),
+        // ModuleRoute('/', module: SignUpModule()),
+        // ModuleRoute('/delivery/', module: DeliveryModule()),
       ];
 }
