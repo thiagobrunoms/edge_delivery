@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.edgedelivery">
     <uses-permission android:name="android.permission.INTERNET" />
+
    <application
         android:label="edge_delivery"
         android:name="${applicationName}"
@@ -31,5 +32,8 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+    
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAdlkQTt1WXdCnUi6m6u6KwUkLOSNeOVR4"/>
     </application>
 </manifest>

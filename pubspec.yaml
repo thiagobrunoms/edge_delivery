@@ -45,6 +45,7 @@ dependencies:
   flutter_modular: ^5.0.3
   intl: ^0.17.0
   location: ^4.2.0
+  google_maps_flutter: ^2.2.1
 
 dev_dependencies:
   flutter_test:
