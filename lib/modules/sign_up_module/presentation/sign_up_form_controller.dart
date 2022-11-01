@@ -92,8 +92,11 @@ abstract class _SignUpFormControllerBase with Store {
 
   @action
   Future<void> _send() async {
-    requestFuture = ObservableFuture(usecase(
-        param: SignUpParam(name: name, email: email, password: password)));
+    SignUpRestDatasource datasource = SignUpRestDatasource(dio: Dio());
+    SignUpRepository repository = SignUpRepositoryImpl(datasource: datasource);
+    SignUpUsecaseImpl signUpJinUsecase = SignUpUsecaseImpl(repository: repository);
+
+    requestFuture = ObservableFuture(signUpJinUsecase(param: SignUpParam(name: 's', password: 'password', email: 'email') ));
 
     var response = await requestFuture;
 
