@@ -1,0 +1,2 @@
+json_key_file("fastlane/pc-api-7670998206763799509-764-06428ee1e005.json") # Path to the json secret file - Follow https://docs.fastlane.tools/actions/supply/#setup to get one
+package_name("com.example.edgedelivery") # e.g. com.krausefx.app
